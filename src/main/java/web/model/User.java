@@ -45,6 +45,13 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+    public String getRolesToString() {
+        StringBuilder roleToString = new StringBuilder();
+        for(Role role : roles) {
+            roleToString.append(role.getRole().substring(5)).append(", ");
+        }
+        return roleToString.deleteCharAt(roleToString.length()-2).toString();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

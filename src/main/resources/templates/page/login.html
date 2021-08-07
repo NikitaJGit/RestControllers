@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:insert="~{base::head}"></div>
+    <title>Login Page</title>
+</head>
+
+<body>
+<div th:insert="~{base::aside}" style="float: left"></div>
+<div style="width: 20%;margin: 0 auto;">
+
+    <th:block th:if="${param.logout}"><p>Вы вышли из аккаунта</p></th:block>
+    <th:block th:if="${param.error}"><p>Неверный логин или пароль</p></th:block>
+    <h1 class="h3 mb-3 fw-normal" style="margin: 0 auto">Please sign in</h1>
+    <form method="post" th:action="@{/login_proc}">
+    <div class="form-floating">
+        <input type="text" class="form-control" name="username" id="username" placeholder="name@example.com" required autofocus>
+        <label for="username">Email address</label>
+    </div>
+    <div class="form-floating">
+        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+        <label for="password">Password</label>
+    </div>
+    <br>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+    </form>
+</div>
+</body>
+</html>

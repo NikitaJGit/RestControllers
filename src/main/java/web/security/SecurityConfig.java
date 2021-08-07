@@ -40,17 +40,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/userdata/**").authenticated()
+                .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and();
 
         http.formLogin()
+                .loginPage("/login")
                 .loginProcessingUrl("/login_proc")
                 .successHandler(loginSuccessHandler)
+                .failureUrl("/login?error")
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .permitAll();
+
+        http.logout()
+                .permitAll()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout")
+                .invalidateHttpSession(true)
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
 
         http.exceptionHandling()
                 .accessDeniedPage("/login");

@@ -18,11 +18,11 @@ public class UserController {
     }
 
 
-    @GetMapping("/userdata/user")
+    @GetMapping("/user")
     public String user(Model model, Principal principal){
         String s = principal.getName();
         User user =  userService.loadUserByUsername(s);
         model.addAttribute("user", user);
-        return "/userdata";
+        return "user/userdata";
     }
 }

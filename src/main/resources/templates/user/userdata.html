@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <div th:insert="~{base::head}"></div>
+  <title>Show one user</title>
+</head>
+<body>
+<div th:insert="~{base::header}"></div>
+<div th:insert="~{base::aside}" style="float: left"></div>
+  <h1>User information-page</h1>
+<div class="container-fluid">
+  <div id="allUsers" class="tab-pane active">
+    <div class="card">
+      <div class="card-header"><p><strong>About user</strong></p></div>
+      <div class="text-center">
+        <div class="p-3">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">FirstName</th>
+              <th scope="col">LastName</th>
+              <th scope="col">Login</th>
+              <th scope="col">Age</th>
+              <th scope="col">Roles</th>
+            </tr>
+            </thead>
+            <tbody>
+            <td th:text="${user.getId()}"></td>
+            <td th:text="${user.getName()}"></td>
+            <td th:text="${user.getSurname()}"></td>
+            <td th:text="${user.getUsername()}"></td>
+            <td th:text="${user.getAge()}"></td>
+            <td th:text="${user.getRolesToString()}"></td>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

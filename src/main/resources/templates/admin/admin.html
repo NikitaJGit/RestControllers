@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <div th:insert="~{base::head}"></div>
+  <title>Admin page</title>
+</head>
+<body>
+<div>
+  <div th:insert="~{base::header}"></div>
+  <div th:insert="~{base::aside}" style="float: left"></div>
+  <main style="float: left; width: 80%">
+    <h1>Admin Panel</h1>
+    <ul class="nav nav-tabs">
+      <li class="nav-item active">
+        <a data-toggle="tab" class="nav-link active" href="/admin">Users table</a>
+      </li>
+      <li class="nav-item">
+        <a data-toggle="tab" class="nav-link" href="/admin/new">New User</a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div id="allUsers" class="tab-pane active">
+        <div class="card">
+          <div class="card-header"><p><strong>All Users</strong></p></div>
+          <div class="p-3">
+            <table class="table table-striped table-hover">
+              <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">FirstName</th>
+                <th scope="col">LastName</th>
+                <th scope="col">Login</th>
+                <th scope="col">Age</th>
+                <th scope="col">Roles</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="usr : ${users}">
+                <td th:text="${usr.getId()}"></td>
+                <td th:text="${usr.getName()}"></td>
+                <td th:text="${usr.getSurname()}"></td>
+                <td th:text="${usr.getUsername()}"></td>
+                <td th:text="${usr.getAge()}"></td>
+                <td th:text="${usr.getRolesToString()}"></td>
+                <td>
+                  <a class="btn btn-info" th:href="@{/admin/{id}/edit(id=${usr.getId()})}">Edit</a>
+                </td>
+                <td>
+                  <a class="btn btn-danger" th:href="@{/admin/{id}/delete(id=${usr.getId()})}">Delete</a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div id="newUser" class="tab-pane"></div>
+    </div>
+    <br/>
+    <hr/>
+    </main>
+  </div>
+</body>
+</html>

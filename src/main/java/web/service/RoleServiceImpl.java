@@ -6,15 +6,20 @@ import web.dao.UserDao;
 import web.model.Role;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class RoleServiceImpl implements RoleService{
 
-    private UserDao userDao;
     private RoleDao roleDao;
-    public RoleServiceImpl(UserDao userDao, RoleDao roleDao) {
-        this.userDao = userDao;
+    public RoleServiceImpl(RoleDao roleDao) {
         this.roleDao = roleDao;
+    }
+
+    @Override
+    public Set<Role> getAllRoles() {
+        return roleDao.getAllRoles();
     }
 
     @Override
