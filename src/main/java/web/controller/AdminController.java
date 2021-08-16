@@ -2,20 +2,24 @@ package web.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import web.model.Role;
+import web.mapper.Mapper;
 import web.model.User;
+import web.model.WebModelUser;
 import web.service.RoleService;
 import web.service.UserService;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.validation.Valid;
+import java.security.Principal;
+import java.util.List;
 
-
-@Controller
+@Validated
+@RestController
 public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
@@ -25,62 +29,39 @@ public class AdminController {
         this.userService = userService;
         this.roleService = roleService;
     }
-
-    @GetMapping("/admin")
-    public String allUsers(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        return "admin/admin";
-    }
-
-    @GetMapping(value = "/admin/new")
-    public String newUser(@ModelAttribute("user") User user, Model model){
-        model.addAttribute("roleList", roleService.getAllRoles() );
-        return "/admin/new";
-    }
-
-    @PostMapping(value = "/admin/addUser")
-    public String addUser(@ModelAttribute("user") User user){
-        user.setRoles(user.getRoles());
+    @PostMapping("/api/admin/new")
+    public ResponseEntity<WebModelUser> addUser(@RequestBody @Valid WebModelUser webModelUser) {
+        User user = Mapper.toUser(webModelUser);
         userService.addUser(user);
-        return "redirect:/admin";
+        return ResponseEntity.ok(Mapper.toWebModel(userService.getByLogin(user.getUsername())));
     }
 
-    @GetMapping("/admin/{id}/edit")
-    public String edit(Model model, @PathVariable("id") long id){
+    @GetMapping("/api/admin/{id}")
+    public ResponseEntity<WebModelUser> getUser(Model model, @PathVariable("id") long id) {
         model.addAttribute("user", userService.getUser(id));
         model.addAttribute("roleList", roleService.getAllRoles());
-        return "admin/edit";
+        return ResponseEntity.ok(Mapper.toWebModel(userService.getUser(id)));
     }
 
-    @PostMapping("/admin/{id}/update")
-    public String update(@ModelAttribute("user") User user, @PathVariable("id") long id){
-        Set<Role> roles = new HashSet<>();
-        user.setId(id);
-        for (Role role : user.getRoles()) {
-            if(role.getRole().equals(roleService.getRoleAdmin().getRole())) {
-                roles.add(roleService.getRoleAdmin());
-            }
-            if(role.getRole().equals(roleService.getRoleUser().getRole())) {
-                roles.add(roleService.getRoleUser());
-            }
-        }
-        user.setRoles(roles);
+    @PatchMapping("/api/admin/{id}")
+    public ResponseEntity<WebModelUser> update(@PathVariable("id") long id, @RequestBody @Valid WebModelUser webModelUser) {
+        User user = Mapper.toUser(webModelUser);
         userService.updateUser(user);
-        return "redirect:/admin";
+        return ResponseEntity.ok(webModelUser);
     }
 
-    @GetMapping("/admin/{id}/delete")
-    public String delete(Model model, @PathVariable("id") long id){
-        model.addAttribute("user", userService.getUser(id));
-        model.addAttribute("roleList", roleService.getAllRoles());
-        return "admin/delete";
+    @DeleteMapping("/api/admin/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") long id) {
+        userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    @PostMapping("/admin/drop")
-    public String drop(@ModelAttribute("user") User user){
-        User userGet = userService.getUser(user.getId());
-        userService.deleteUser(userGet.getId());
-        return "redirect:/admin";
+    @GetMapping(value = "/api/users")
+    public ResponseEntity<List<WebModelUser>> allUsers(){
+        return ResponseEntity.ok(Mapper.toWebModelList(userService.getAllUsers()));
+    }
+    @GetMapping(value = "/api/users/me")
+    public ResponseEntity<WebModelUser> me(Principal principal){
+        return ResponseEntity.ok(Mapper.toWebModel(userService.loadUserByUsername(principal.getName())));
     }
 }
 
