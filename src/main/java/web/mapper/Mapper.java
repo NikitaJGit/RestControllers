@@ -1,6 +1,7 @@
 package web.mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import web.model.Role;
 import web.model.User;
 import web.model.WebModelUser;
@@ -11,13 +12,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Component
 public class Mapper {
 
-    @Autowired
-    private static RoleService roleService;
+    private final RoleService roleService;
+
+    public Mapper(RoleService roleService) {
+        this.roleService = roleService;
+    }
 
 
-    public static User toUser(WebModelUser webModelUser){
+    public User toUser(WebModelUser webModelUser){
         User user = new User();
         user.setId(webModelUser.getId());
         user.setUsername(webModelUser.getLogin());

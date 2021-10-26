@@ -23,15 +23,17 @@ import java.util.List;
 public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
+    private final Mapper mapper;
 
     @Autowired
-    public AdminController(UserService userService, RoleService roleService){
+    public AdminController(UserService userService, RoleService roleService, Mapper mapper){
         this.userService = userService;
         this.roleService = roleService;
+        this.mapper = mapper;
     }
     @PostMapping("/api/admin/new")
     public ResponseEntity<WebModelUser> addUser(@RequestBody @Valid WebModelUser webModelUser) {
-        User user = Mapper.toUser(webModelUser);
+        User user = mapper.toUser(webModelUser);
         userService.addUser(user);
         return ResponseEntity.ok(Mapper.toWebModel(userService.getByLogin(user.getUsername())));
     }
@@ -45,7 +47,7 @@ public class AdminController {
 
     @PatchMapping("/api/admin/{id}")
     public ResponseEntity<WebModelUser> update(@PathVariable("id") long id, @RequestBody @Valid WebModelUser webModelUser) {
-        User user = Mapper.toUser(webModelUser);
+        User user = mapper.toUser(webModelUser);
         userService.updateUser(user);
         return ResponseEntity.ok(webModelUser);
     }

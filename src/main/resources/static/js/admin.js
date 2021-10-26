@@ -104,7 +104,7 @@ $(document).ready(function(){
     console.log("sendEditRequest " + userId);
 
     $('#loginE').val(user.login);
-    $('#password').val(user.password);
+    $('#passwordE').val(user.password);
     $('#idE').val(user.id);
      $('#nameE').val(user.name);
      $('#surnameE').val(user.surname);
