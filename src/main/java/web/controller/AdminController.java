@@ -45,8 +45,8 @@ public class AdminController {
         return ResponseEntity.ok(Mapper.toWebModel(userService.getUser(id)));
     }
 
-    @PatchMapping("/api/admin/{id}")
-    public ResponseEntity<WebModelUser> update(@PathVariable("id") long id, @RequestBody @Valid WebModelUser webModelUser) {
+    @PatchMapping("/api/admin")
+    public ResponseEntity<WebModelUser> update(@RequestBody @Valid WebModelUser webModelUser) {
         User user = mapper.toUser(webModelUser);
         userService.updateUser(user);
         return ResponseEntity.ok(webModelUser);

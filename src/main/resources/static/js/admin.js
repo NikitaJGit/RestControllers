@@ -103,7 +103,7 @@ $(document).ready(function(){
 
     console.log("sendEditRequest " + userId);
 
-    $('#loginE').val(user.login);
+    $('#loginE').val(user.username);
     $('#passwordE').val(user.password);
     $('#idE').val(user.id);
      $('#nameE').val(user.name);
@@ -131,16 +131,17 @@ $(document).ready(function(){
 
         let user = {
             id: $('#idE').val(),
-            login: $('#loginE').val(),
-            age: $('#ageE').val(),
-            email: $('#emailE').val(),
+            username: $('#loginE').val(),
             password: $('#passwordE').val(),
+            name: $('#nameE').val(),
+            surname: $('#surnameE').val(),
+            age: $('#ageE').val(),
             roleList: $('#roleListE').val().split(","),
             roles: $('#rolesE').val(),
             rolesList: arrRolesList
         };
         $.ajax({
-            url: `http://localhost:8080/api/admin/${userId}`,
+            url: `http://localhost:8080/api/admin`,
             type: 'patch',
             data: JSON.stringify(user),
             headers: {
@@ -177,7 +178,7 @@ $(document).ready(function(){
                                 .append($('<td>').text(user.id))
                                 .append($('<td>').text(user.name))
                                 .append($('<td>').text(user.surname))
-                                .append($('<td>').text(user.login))
+                                .append($('<td>').text(user.username))
                                 .append($('<td>').text(user.age))
                                 .append($('<td>').text(user.roleList))
                                 .append($('<td>').html("<input onclick=\"openEditUserModal(" + user.id + ")\" type=\"button\" class=\"btn btn-primary\"\n" +

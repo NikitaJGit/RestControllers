@@ -16,7 +16,7 @@ public class WebModelUser {
     @Email
     @NotBlank(message = "Cant be is empty")
     @Size(min = 8, max = 30)
-    private String login;
+    private String username;
 
     @NotBlank(message = "Cant be is empty")
     @Size(min = 8, max = 30)

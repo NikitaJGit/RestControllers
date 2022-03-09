@@ -1,6 +1,5 @@
 package web.mapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.model.Role;
 import web.model.User;
@@ -25,7 +24,7 @@ public class Mapper {
     public User toUser(WebModelUser webModelUser){
         User user = new User();
         user.setId(webModelUser.getId());
-        user.setUsername(webModelUser.getLogin());
+        user.setUsername(webModelUser.getUsername());
         user.setPassword(webModelUser.getPassword());
         user.setName(webModelUser.getName());
         user.setSurname(webModelUser.getSurname());
@@ -52,7 +51,7 @@ public class Mapper {
     public static WebModelUser toWebModel(User user) {
         WebModelUser webModelUser = new WebModelUser();
         webModelUser.setId(user.getId());
-        webModelUser.setLogin(user.getUsername());
+        webModelUser.setUsername(user.getUsername());
         webModelUser.setPassword(user.getPassword());
         webModelUser.setName(user.getName());
         webModelUser.setSurname(user.getSurname());
